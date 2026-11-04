@@ -1,0 +1,35 @@
+{
+  "skill_name": "orchestrator-mode",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to understand how user signup works end to end in this repo before I touch anything — routes, handlers, validation, services, models, and the tests that cover them. Give me a map I can use. Keep my context clean, use subagents.",
+      "expected_output": "Main session launches several Explore agents in parallel (e.g. routes/handlers, services/models, tests) with self-contained prompts that ask for path:line output; main session does not itself grep/read many files; final answer is a compact synthesized map with path:line refs.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Audit every API input validator under src/api/validators for missing type annotations, missing error handling, and string fields with no maximum length. Report a prioritized list. Don't fix anything yet.",
+      "expected_output": "Delegates the multi-file sweep (ideally split across agents by folder) instead of reading every validator file in the main session; asks for compact findings with path:line; spot-checks one or two findings before reporting; no edits made.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Run the tests for the notifications feature and tell me what's failing and why. Then suggest fixes, but don't apply them.",
+      "expected_output": "Delegates the test run to a general-purpose agent with instructions to return only failing test names and short error excerpts (not the full log); main session does not run the full suite itself; reports a compact diagnosis with path:line references.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "What middleware does the `/tasks` route group use? Just check src/routes.js.",
+      "expected_output": "Negative control: a small targeted lookup in one known file. The main session should read the file (or the relevant lines) directly and NOT spawn subagents.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Add a nullable `due_date` field to tasks: migration, model, input validation, API response, and tests. Go ahead and implement it.",
+      "expected_output": "Main session plans the steps, then delegates implementation to role-briefed general-purpose agents (e.g. schema and model specialist first; then API layer specialist and test writer in parallel) with explicit, non-overlapping file ownership. The main session does not write the migration, validation, response, or tests itself. It verifies with `git diff --stat`, a targeted diff, and a targeted test run before reporting.",
+      "files": []
+    }
+  ]
+}
